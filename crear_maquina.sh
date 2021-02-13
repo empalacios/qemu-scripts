@@ -24,12 +24,37 @@ vm_directory=$qemu_vms_directory/$vm_name
 disk_name=$vm_directory/$vm_name.qcow2
 
 
+if [ ! -d "$qemu_vms_directory" ]
+then
+  echo "Error: base virtual machines directory $qemu_vms_directory doesn't exist."
+  exit 1
+fi
+
+if [ "$disk_size" -le "0" ]
+then
+  echo "Error: disk capacity must be greater than zero (0) Gigabytes"
+  exit 1
+fi
+
+if [ "$ram_size" -le "0" -o "$ram_size" -gt "4096" ]
+then
+  echo "Error: RAM capacity must be a value between one (1) and four thousand ninety six (4096) Megabytes (1 Mb - 4 Gigabytes)"
+  exit 1
+fi
+
+if [ ! -f "$installation_image" ]
+then
+  echo "Error: installation image $installation_image doesn't exist."
+  exit 1
+fi
+
 if [ -e "$vm_directory" ]
 then
-  rm -rf $vm_directory
+  echo "Error: virtual machine's directory $vm_directory exists."
+  exit 1
 fi
-mkdir $vm_directory
 
+mkdir $vm_directory
 qemu-img create -f qcow2 $disk_name "${disk_size}G"
 echo "Created hard drive $disk_name for $vm_name, size $disk_size Gb"
 
