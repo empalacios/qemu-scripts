@@ -75,6 +75,15 @@ echo "    -cdrom $installation_image \\"
 echo "    -display gtk"
 echo
 echo
+echo 'Start vm with tcp connection on host port 8000 forwarding to guest on port 80'
+echo "  qemu-system-x86_64 \\"
+echo "    -m $ram_size \\"
+echo "    -nic user,model=virtio,hostfwd=tcp::8000-:80 \\"
+echo "    -drive file=$disk_name,media=disk,if=virtio \\"
+echo "    -cdrom $installation_image \\"
+echo "    -display gtk"
+echo
+echo
 qemu_vnc_port_parameter=$(expr $vnc_port - 5900)
 echo 'Start vm with vnc server for remote display'
 echo "  qemu-system-x86_64 \\"
