@@ -54,6 +54,12 @@ then
   exit 1
 fi
 
+if [ "$vnc_port" -lt "5900" -o "$vnc_port" -gt "5999" ]
+then
+  echo "Error: vnc port must be in range 5900 .. 5999."
+  exit 1
+fi
+
 mkdir $vm_directory
 qemu-img create -f qcow2 $disk_name "${disk_size}G"
 echo "Created hard drive $disk_name for $vm_name, size $disk_size Gb"
